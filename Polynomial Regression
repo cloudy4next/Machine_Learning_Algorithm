@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Feb  7 22:44:11 2019
+
+@author: cloudy
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Importing the dataset
+dataset = pd.read_csv('Position_Salaries.csv')
+X = dataset.iloc[:, 1:2].values
+y = dataset.iloc[:, 2].values
+
+# Fitting 
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(X, y)
+
+# Fitting Polynomial
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg  = PolynomialFeatures(degree =4)
+X_poly=poly_reg.fit_transform(X)
+lin_reg_2 = LinearRegression()
+lin_reg_2.fit(X_poly, y)
+
+# Visualising the linear 
+plt.scatter(X, y, color= 'black')
+plt.plot(X,lin_reg.predict(X),color = 'blue')
+plt.title('Truth or bluff(Linear Regression)')
+plt.xlabel('Position label')
+plt.ylabel('Salary')
+plt.show()
+
+
+# Visualiing the Polynomial 
+plt.scatter(X, y, color= 'black')
+plt.plot(X,lin_reg_2.predict(poly_reg.fit_transform(X)),color = 'blue')
+plt.title('Truth or bluff(Polynomial  Regression)')
+plt.xlabel('Position label')
+plt.ylabel('Salary')
+plt.show()
+
+# predict a new result with Linear
+lin_reg.predict(6.5)
+#predict a new result wirth polynomal
+
+lin_reg_2.predict(poly_reg.fit_transform(6.5))
